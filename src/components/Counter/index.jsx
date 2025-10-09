@@ -7,23 +7,29 @@ export const Counter = () => {
     const count = useSelector((state) => state.counter.value);
     const dispatch = useDispatch();
 
-    const [amount, setAmount] = useState();
-    const [asyncAmount, setAsyncAmount] = useState();
-    const [asyncDecAmount, setAsyncDecAmount] = useState();
+    const [amount, setAmount] = useState(0);
+    const [asyncAmount, setAsyncAmount] = useState(0);
+    const [asyncDecAmount, setAsyncDecAmount] = useState(0);
 
     const handleAmount = () => {
-        dispatch(incrementByAmount(amount));
-        setAmount(null);
+        if (amount) {
+            dispatch(incrementByAmount(amount));
+            setAmount(0); 
+        };
     };
 
     const handleIncrementAsync = () => {
-        dispatch(incrementAsync(asyncAmount));
-        setAsyncAmount(null);
+        if (asyncAmount) {
+            dispatch(incrementAsync(asyncAmount));
+            setAsyncAmount(0);            
+        };
     };
 
-        const handleDecrementAsync = () => {
-        dispatch(decrementAsync(asyncDecAmount));
-        setAsyncDecAmount(null);
+    const handleDecrementAsync = () => {
+        if (asyncDecAmount) {
+            dispatch(decrementAsync(asyncDecAmount));
+            setAsyncDecAmount(0);            
+        };
     };
 
     return (
