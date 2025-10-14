@@ -8,6 +8,8 @@ export const Counter = styled.div `
     flex-direction: column;
     gap: 30px;
     justify-content: center;
+    font-family: Raleway;
+    font-size: 18px;
 `
 export const SimpleCounter = styled.div `
     display: flex;
