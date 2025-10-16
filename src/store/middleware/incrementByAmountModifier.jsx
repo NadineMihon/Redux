@@ -1,6 +1,6 @@
 const incrementByAmountModifier = store => next => action => {
     if (action.type === 'counter/incrementByAmount') {
-        action.payload = action.payload + 3;
+        return next({...action, payload: action.payload + 3});
     }
     return next(action);
 };
