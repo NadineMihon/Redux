@@ -1,12 +1,12 @@
 import React from "react";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const getPost = createAsyncThunk(
-    'posts/fetchPost',
-    async (postId) => {
+export const getPostsList = createAsyncThunk(
+    'posts/fetchPosts',
+    async () => {
         return new Promise((resolve) => {
             setTimeout(() => {
-                fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+                fetch(`https://jsonplaceholder.typicode.com/posts?userId=1`)
                     .then(response => response.json())
                     .then(json => resolve(json))
                 // const posts = [
@@ -41,17 +41,17 @@ export const getPost = createAsyncThunk(
 export const postsSlice = createSlice({
     name: 'posts',
     initialState: {
-        post: {},
-        status: 'idle',
+        postsList: [],
+        postsListStatus: 'idle',
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getPost.pending, (state) => {
-                state.status = 'loading';
+            .addCase(getPostsList.pending, (state) => {
+                state.postsListStatus = 'loading';
             })
-            .addCase(getPost.fulfilled, (state, action) => {
-                state.status = 'idle';
-                state.post = action.payload;
+            .addCase(getPostsList.fulfilled, (state, action) => {
+                state.postsListStatus = 'idle';
+                state.postsList = action.payload;
             })
     },
 });

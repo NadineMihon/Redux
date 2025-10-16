@@ -1,49 +1,44 @@
-import React, { useState } from "react";
-import * as SC from './styles'
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPost } from "../../slices/posts/postSlice";
+import { getPostsList } from "../../slices/posts/postSlice";
+import { Link } from "react-router-dom";
+import * as SC from './styles';
 
 export const Posts = () => {
-    const post = useSelector((state) => state.posts.post);
-    const status = useSelector((state) => state.posts.status);
+    const postsList = useSelector((state) => state.posts.postsList);
+    const status = useSelector((state) => state.posts.postsListStatus);
 
     const dispatch = useDispatch();
 
-    const [postId, setPostId] = useState(0);
-
-    const handlePost = () => {
-        if (postId) {
-            dispatch(getPost(postId));
-            setPostId(0);
+    useEffect(() => {
+        if (postsList.length === 0) {
+            dispatch(getPostsList());  
         }
-    };
+    }, [dispatch, postsList.length]);
 
     return (
         <SC.Wrapper>
             <h1>Посты</h1>
-            <SC.Form>
-                <input
-                    value={postId || ''} 
-                    type="number" 
-                    placeholder="Введите номер id" 
-                    onChange={(e) => setPostId(Number(e.target.value))}
-                />
-                <SC.Button onClick={() => handlePost()}>Получить пост</SC.Button>
-            </SC.Form>
-            <SC.Post>
+            <SC.Posts>
                 {
-                    status === 'loading' && <p>Загрузка поста...</p>
+                    status === 'loading' && <p>Загрузка постов...</p>
                 }
                 {
-                    post.id ?
-                    <div>
-                        <h2>{`Пост №${post.id}`}</h2>
-                        <h3>{post.title}</h3>
-                        <SC.Body>{post.body}</SC.Body>
-                    </div>
+                    postsList.length && status === 'idle' ? 
+                    postsList.map((post) => (
+                        <SC.Post key={post.id}>                        
+                            <SC.Link 
+                                to={`/posts/${post.id}`}
+                                as={Link}
+                            >
+                                {post.title}
+                            </SC.Link>
+                            <SC.Info>{post.body}</SC.Info>
+                        </SC.Post>
+                    ))
                     : ''
                 }
-            </SC.Post>
+            </SC.Posts>
         </SC.Wrapper>
     )
 };
